@@ -14,7 +14,7 @@ public class YandexMarketPage extends BasePage {
 
     public void selectCategory(String categoryName) {
         openCatalog();
-        $x("//ul[contains(@data-tid, 'sections')]//a/span[contains(text(),'" + categoryName + "')]").click();
+        $x("//a[contains(@class, '_3yHCR') and text()='" + categoryName + "']").click();
     }
 
     public void applyFilter(String filterType, String filterValue) {
@@ -31,6 +31,10 @@ public class YandexMarketPage extends BasePage {
         sortOption.click();
     }
 
-
+    public void search(String categoryName, String filterType, String filterValue, String sortType) {
+        selectCategory(categoryName);
+        applyFilter(filterType, filterValue);
+        sortBy(sortType);
+    }
 }
 

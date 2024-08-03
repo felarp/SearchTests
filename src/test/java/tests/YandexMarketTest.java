@@ -1,6 +1,7 @@
 package tests;
 
 import base.BaseTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,7 +12,7 @@ public class YandexMarketTest extends BaseTest {
 
     private static YandexMarketPage marketPage;
 
-    @BeforeAll
+    @BeforeClass
     public static void setUp() {
         marketPage = new YandexMarketPage();
     }
@@ -19,9 +20,8 @@ public class YandexMarketTest extends BaseTest {
     @Test
     public void testSearchWithFilter() {
         open("https://market.yandex.ru/");
-        marketPage.selectCategory("ноутбуки");
-        marketPage.applyFilter("Цена до", "60000");
-        marketPage.sortBy("по цене: сначала дорогие");
+
+        marketPage.search("Дом", "Цена до", "60000", "по цене: сначала дорогие");
     }
 }
 
