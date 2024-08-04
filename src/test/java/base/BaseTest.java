@@ -5,7 +5,6 @@ import io.qameta.allure.Step;
 import org.junit.jupiter.api.AfterEach;
 
 
-
 public class BaseTest {
 protected static WebDriverManager driver = new WebDriverManager();
 
