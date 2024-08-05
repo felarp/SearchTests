@@ -8,19 +8,18 @@ import static com.codeborne.selenide.Selenide.$x;
 public class YandexMarketPage extends BasePage {
 
 
-    @Step("Открыть каталог")
     public void openCatalog() {
-        $x("//noindex[@class='_1yVxH']").click();
+        SelenideElement catalogButton = $x("//span[text()= 'Каталог']");
+        catalogButton.scrollIntoView(true).shouldBe(Condition.visible).click();
     }
 
     @Step("Выбрать категорию: {categoryPath}")
     public void selectCategory(String... categoryPath) {
         for (String category : categoryPath) {
-            SelenideElement categoryElement = $x("//span[contains(@class, '_3W4t0') and text()='" + category + "']");
-            categoryElement.shouldBe(Condition.visible).click();
+            SelenideElement categoryElement = $x("//span[contains(text(), '" + category + "')]");
+            categoryElement.scrollIntoView(true).shouldBe(Condition.visible).click();
         }
     }
 }
-
 
 
