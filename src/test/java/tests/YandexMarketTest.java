@@ -37,9 +37,7 @@ public class YandexMarketTest extends BaseTest {
         catalogPageResult.sortBy(sortType);
 
         SelenideElement desiredElement = catalogPageResult.getElementContainingText(filterValue);
-        boolean elementFound = catalogPageResult.scrollAndFindElement(desiredElement, 10);
-
-        Assert.assertTrue(elementFound, "Element with filter value '" + filterValue + "' was not found!");
+        catalogPageResult.scrollAndFindElement(desiredElement, 10);
 
         catalogPageResult.verifyResultsContainFilter(filterValue);
         String firstProductName = catalogPageResult.copyFirstProductName();
@@ -50,4 +48,5 @@ public class YandexMarketTest extends BaseTest {
         catalogPageResult.addFirstLaptopToCart();
     }
 }
+
 

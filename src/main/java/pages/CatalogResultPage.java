@@ -7,11 +7,10 @@ import org.openqa.selenium.Keys;
 import static com.codeborne.selenide.Selenide.*;
 import static constants.Constant.TimeOuts.Xpaths.FILTER_OPTION_XPATH;
 import static constants.Constant.TimeOuts.Xpaths.FILTER_RANGE_INPUT_XPATH;
+import org.testng.Assert;
 
 
 public class CatalogResultPage extends BasePage {
-
-
 
     @Step("Применить фильтр: {filterType} - {filterValue}")
     public void applyFilter(String filterType, String filterValue) {
@@ -71,20 +70,20 @@ public class CatalogResultPage extends BasePage {
         return $x("//*[contains(text(), '" + text + "')]");
     }
 
-    @Step("Скролл и поиск элемента")
-    public boolean scrollAndFindElement(SelenideElement element, int maxScrollAttempts) {
+    @Step("Скролл и поиск элемента: {element}")
+    public void scrollAndFindElement(SelenideElement element, int maxScrollAttempts) {
+        boolean elementFound = false;
+
         for (int i = 0; i < maxScrollAttempts; i++) {
             if (element.exists()) {
-                return true;
+                elementFound = true;
+                break;
             }
             actions().sendKeys(Keys.PAGE_DOWN).perform();
             sleep(500);
         }
-        return false;
+        Assert.assertTrue(elementFound, "Элемент не был найден!");
     }
-
 }
-
-
 
 
