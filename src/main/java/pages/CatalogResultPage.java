@@ -5,31 +5,35 @@ import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 import static com.codeborne.selenide.Selenide.$$x;
 import static com.codeborne.selenide.Selenide.$x;
+import static constants.Constant.TimeOuts.Xpaths.FILTER_OPTION_XPATH;
+import static constants.Constant.TimeOuts.Xpaths.FILTER_RANGE_INPUT_XPATH;
+
 
 public class CatalogResultPage extends BasePage {
-    @Step("Применить фильтр диапазона: {filterType} - {filterValue}")
-    public void applyFilterRange(String filterType, String filterValue) {
-        SelenideElement filterInput = $x("//legend[contains(text(), '" + filterType + "')]/following::input[@qa-mark='range-to']");
-        filterInput.scrollIntoView(true).shouldBe(Condition.visible).clear();
-        filterInput.setValue(filterValue).pressEnter();
-    }
+
+
 
     @Step("Применить фильтр: {filterType} - {filterValue}")
     public void applyFilter(String filterType, String filterValue) {
-        SelenideElement filterOption = $x("//legend[contains(text(), '" + filterType + "')]/following::*[contains(text(), '" + filterValue + "')]");
-        filterOption.scrollIntoView(true).shouldBe(Condition.visible).click();
+        SelenideElement filter;
+        if (filterValue.contains("-")) {
+            filter = $x(String.format(FILTER_RANGE_INPUT_XPATH, filterType));
+        } else {
+            filter = $x(String.format(FILTER_OPTION_XPATH, filterType, filterValue));
+        }
+        filter.scrollIntoView(true).shouldBe(Condition.visible).click();
     }
 
     @Step("Сортировать по: {sortType}")
     public void sortBy(String sortType) {
         SelenideElement sortButton = $x("//button[contains(text(), 'по популярности')]");
-        sortButton.scrollIntoView(true).click();
-        $x("//button[contains(text(), '" + sortType + "')]").scrollIntoView(true).click();
+        sortButton.scrollIntoView(true).shouldBe(Condition.visible).click();
+        $x("//button[contains(text(), '" + sortType + "')]").scrollIntoView(true).shouldBe(Condition.visible).click();
     }
 
     @Step("Сбросить все фильтры")
     public void resetFilters() {
-        $x("//button[contains(text(), 'Сбросить все')]").scrollIntoView(true).click();
+        $x("//button[contains(text(), 'Сбросить все')]").scrollIntoView(true).shouldBe(Condition.visible).click();
     }
 
     @Step("Проверить, что все результаты содержат заданный фильтр: {filterValue}")
@@ -41,7 +45,7 @@ public class CatalogResultPage extends BasePage {
 
     @Step("Копировать название первого товара")
     public String copyFirstProductName() {
-        return $$x("//article//h3").first().scrollIntoView(true).getText();
+        return $$x("//article//h3").first().scrollIntoView(true).shouldBe(Condition.visible).getText();
     }
 
     @Step("Проверить, что все результаты содержат текст поиска: {searchText}")
@@ -62,4 +66,12 @@ public class CatalogResultPage extends BasePage {
         SelenideElement cartNotification = $x("//div[contains(@class, 'notification_type_cart')]");
         cartNotification.scrollIntoView(true).shouldBe(Condition.visible);
     }
+
+    public SelenideElement getElementContainingText(String text) {
+        return $x("//*[contains(text(), '" + text + "')]");
+    }
 }
+
+
+
+
