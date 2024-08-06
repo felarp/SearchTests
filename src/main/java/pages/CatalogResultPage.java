@@ -3,8 +3,8 @@ package pages;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
-import static com.codeborne.selenide.Selenide.$$x;
-import static com.codeborne.selenide.Selenide.$x;
+import org.openqa.selenium.Keys;
+import static com.codeborne.selenide.Selenide.*;
 import static constants.Constant.TimeOuts.Xpaths.FILTER_OPTION_XPATH;
 import static constants.Constant.TimeOuts.Xpaths.FILTER_RANGE_INPUT_XPATH;
 
@@ -70,6 +70,19 @@ public class CatalogResultPage extends BasePage {
     public SelenideElement getElementContainingText(String text) {
         return $x("//*[contains(text(), '" + text + "')]");
     }
+
+    @Step("Скролл и поиск элемента")
+    public boolean scrollAndFindElement(SelenideElement element, int maxScrollAttempts) {
+        for (int i = 0; i < maxScrollAttempts; i++) {
+            if (element.exists()) {
+                return true;
+            }
+            actions().sendKeys(Keys.PAGE_DOWN).perform();
+            sleep(500);
+        }
+        return false;
+    }
+
 }
 
 

@@ -11,8 +11,9 @@ public class Constant {
         }
         public static class Xpaths {
             public static final String CATALOG_BUTTON_XPATH = "//span[text()='Каталог']";
-           public static final String FILTER_OPTION_XPATH = "//li[contains(.//span/text(), '%s')]//span[contains(text(), '%s')]";
-            public static final String FILTER_RANGE_INPUT_XPATH = "//li[contains(.//span/text(), '%s')]//input";
+
+            public static final String FILTER_OPTION_XPATH = "//li[descendant::span[text()='%s'] and descendant::label[contains(.,'%s')]]//input";
+            public static String FILTER_RANGE_INPUT_XPATH = "//div[descendant::span[text()='%s']]//input[contains(@name, 'range')]";
         }
     }
 }
