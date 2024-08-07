@@ -9,6 +9,8 @@ import static constants.Constant.TimeOuts.Xpaths.FILTER_OPTION_XPATH;
 import static constants.Constant.TimeOuts.Xpaths.FILTER_RANGE_INPUT_XPATH;
 import org.testng.Assert;
 
+import java.util.List;
+
 
 public class CatalogResultPage extends BasePage {
 
@@ -35,10 +37,12 @@ public class CatalogResultPage extends BasePage {
         $x("//button[contains(text(), 'Сбросить все')]").scrollIntoView(true).shouldBe(Condition.visible).click();
     }
 
-    @Step("Проверить, что все результаты содержат заданный фильтр: {filterValue}")
-    public void verifyResultsContainFilter(String filterValue) {
+    @Step("Проверить, что все результаты содержат заданные фильтры: {filterValues}")
+    public void verifyResultsContainFilters(List<String> filterValues) {
         $$x("//article").forEach(element -> {
-            element.scrollIntoView(true).shouldHave(Condition.text(filterValue));
+            filterValues.forEach(filterValue -> {
+                element.scrollIntoView(true).shouldHave(Condition.text(filterValue));
+            });
         });
     }
 
@@ -47,10 +51,12 @@ public class CatalogResultPage extends BasePage {
         return $$x("//article//h3").first().scrollIntoView(true).shouldBe(Condition.visible).getText();
     }
 
-    @Step("Проверить, что все результаты содержат текст поиска: {searchText}")
-    public void verifyResultsContainSearchText(String searchText) {
+    @Step("Проверить, что все результаты содержат текст поиска: {searchTexts}")
+    public void verifyResultsContainSearchTexts(List<String> searchTexts) {
         $$x("//article//h3").forEach(element -> {
-            element.scrollIntoView(true).shouldHave(Condition.text(searchText));
+            searchTexts.forEach(searchText -> {
+                element.scrollIntoView(true).shouldHave(Condition.text(searchText));
+            });
         });
     }
 

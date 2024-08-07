@@ -1,13 +1,14 @@
 package tests;
 
 import base.BaseTest;
-import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.*;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.CatalogResultPage;
 import pages.YandexMarketPage;
 import org.testng.annotations.DataProvider;
+import java.util.Arrays;
+import java.util.List;
+
 import static constants.Constant.TimeOuts.Urls.YANDEX_MARKET_URL;
 
 
@@ -36,17 +37,17 @@ public class YandexMarketTest extends BaseTest {
         catalogPageResult.applyFilter(filterType, filterValue);
         catalogPageResult.sortBy(sortType);
 
-        SelenideElement desiredElement = catalogPageResult.getElementContainingText(filterValue);
-        catalogPageResult.scrollAndFindElement(desiredElement, 10);
-
-        catalogPageResult.verifyResultsContainFilter(filterValue);
+        catalogPageResult.verifyResultsContainFilters(Arrays.asList(filterValue));
         String firstProductName = catalogPageResult.copyFirstProductName();
         catalogPageResult.resetFilters();
         catalogPageResult.applyFilter(filterType, filterValue);
         catalogPageResult.sortBy(sortType);
-        catalogPageResult.verifyResultsContainSearchText(firstProductName);
+
+        List<String> searchTexts = Arrays.asList(firstProductName);
+        catalogPageResult.verifyResultsContainSearchTexts(searchTexts);
         catalogPageResult.addFirstLaptopToCart();
     }
 }
+
 
 
