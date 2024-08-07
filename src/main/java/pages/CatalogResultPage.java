@@ -3,7 +3,6 @@ package pages;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
-import org.openqa.selenium.Keys;
 import static com.codeborne.selenide.Selenide.*;
 import static constants.Constant.TimeOuts.Xpaths.FILTER_OPTION_XPATH;
 import static constants.Constant.TimeOuts.Xpaths.FILTER_RANGE_INPUT_XPATH;
@@ -70,26 +69,13 @@ public class CatalogResultPage extends BasePage {
 
         SelenideElement cartNotification = $x("//div[contains(@class, 'notification_type_cart')]");
         cartNotification.scrollIntoView(true).shouldBe(Condition.visible);
-    }
 
-    public SelenideElement getElementContainingText(String text) {
-        return $x("//*[contains(text(), '" + text + "')]");
-    }
+       Assert.assertTrue(cartNotification.exists(), "Уведомление о добавлении в корзину не отображается!");
+     }
+     }
 
-    @Step("Скролл и поиск элемента: {element}")
-    public void scrollAndFindElement(SelenideElement element, int maxScrollAttempts) {
-        boolean elementFound = false;
 
-        for (int i = 0; i < maxScrollAttempts; i++) {
-            if (element.exists()) {
-                elementFound = true;
-                break;
-            }
-            actions().sendKeys(Keys.PAGE_DOWN).perform();
-            sleep(500);
-        }
-        Assert.assertTrue(elementFound, "Элемент не был найден!");
-    }
-}
+
+
 
 
