@@ -9,6 +9,7 @@ import org.testng.annotations.DataProvider;
 import java.util.Arrays;
 import java.util.List;
 
+import static constants.Constant.TimeOuts.Urls.YANDEX_MARKET_URL;
 
 
 @Epic("Яндекс Маркет")
@@ -29,10 +30,13 @@ public class YandexMarketTest extends BaseTest {
     @Story("Поиск товара с фильтрами и проверка результатов")
     @Description("Поиск товаров в Яндекс Маркет с заданными фильтрами и проверка соответствия результатов")
     public void testSearchWithFilters(String mainCategory, String subCategory, String filterType, String filterValue, String sortType) {
-        open("https://market.yandex.ru");
+        open(YANDEX_MARKET_URL);
 
         yandexMarketPage.openCatalog();
         yandexMarketPage.selectCategory(mainCategory, subCategory);
+
+
+        catalogPageResult.applyPriceRange("15000", "50000");
 
         catalogPageResult.applyFilter(filterType, filterValue);
         catalogPageResult.sortBy(sortType);
@@ -49,6 +53,5 @@ public class YandexMarketTest extends BaseTest {
         catalogPageResult.addFirstLaptopToCart();
     }
 }
-
 
 
