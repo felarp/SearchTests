@@ -7,45 +7,47 @@ import pages.CatalogResultPage;
 import pages.YandexMarketPage;
 import org.testng.annotations.DataProvider;
 
+import static constants.Constant.TimeOuts.ConstantXpaths.YANDEX_MARKET_URL;
 
-import static constants.Constant.TimeOuts.Urls.YANDEX_MARKET_URL;
 
 
-@Epic("Яндекс Маркет")
-@Feature("Поиск и Фильтры")
 public class YandexMarketTest extends BaseTest {
-
     YandexMarketPage yandexMarketPage = new YandexMarketPage();
     CatalogResultPage catalogPageResult = new CatalogResultPage();
 
     @DataProvider(name = "searchFilters", parallel = true)
     public Object[][] createData() {
         return new Object[][]{
-                {"Электроника", "Гейминг", "Производитель", "Яндекс", "по цене"}
+                {"Электроника", "Смартфоны", "Цены по убыванию", "Производитель: Samsung", "цвет:черный, белый", "бренд:Apple, Samsung"}
         };
     }
 
     @Test(dataProvider = "searchFilters")
-    @Story("Поиск товара с фильтрами и проверка результатов")
-    @Description("Поиск товаров в Яндекс Маркет с заданными фильтрами и проверка соответствия результатов")
-    public void testSearchWithFilters(String mainCategory, String subCategory, String filterType, String filterValue, String sortType) {
-
+    @Story("Поиск товаров с фильтрами и проверкой результатов")
+    public void testSearchWithFilters(String mainCategory, String subCategory, String sortType, String... filterValues) {
         open(YANDEX_MARKET_URL);
-
 
         yandexMarketPage.openCatalog();
         yandexMarketPage.selectCategory(mainCategory, subCategory);
 
+        for (String filterValue : filterValues) {
+            String[] filterParts = filterValue.split(":");
+            String filterType = filterParts[0];
+            String filter = filterParts[1];
+            catalogPageResult.applyFilter(filterType, filter.split(", "));
+        }
 
-        catalogPageResult.applyFilter(filterType, filterValue);
-        catalogPageResult.applyPriceRange("15000", "50000");
+        catalogPageResult.applyPriceRange("40000", "80000");
         catalogPageResult.sortBy(sortType);
 
-
-        catalogPageResult.verifyResultsContainFilters(filterValue);
-
-
-        catalogPageResult.verifyResultsContainSearchTexts("Ноутбук", "HP"); // Примеры текстов поиска
+        for (String filterValue : filterValues) {
+            String[] filterParts = filterValue.split(":");
+            catalogPageResult.verifyResultsContainFilters(filterParts[1].split(", "));
+        }
     }
 }
+
+
+
+
 
